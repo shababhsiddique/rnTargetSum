@@ -20,13 +20,24 @@ class Game extends React.Component{
   .reduce((a, b) => a + b, 0);
 
   state = {
-    selectedNumbers: [0,4],
+    selectedNumbers: [],
   }
 
   isNumberSelected = (numberIndex) => {
-    var selectStatus = this.state.selectedNumbers.indexOf(numberIndex);
-    return (selectStatus >= 0);
+    return  this.state.selectedNumbers.indexOf(numberIndex) >= 0;
   }
+
+  selectNumber = (numberIndex) => {
+    //console.log('you just selected '+numberIndex);
+    //console.log(this.state);
+
+    this.setState((prevState) => {
+      return {
+        selectedNumbers: [...prevState.selectedNumbers, numberIndex]
+      };
+    });
+  }
+
 
   render(){
     return (
@@ -34,9 +45,12 @@ class Game extends React.Component{
         <Text style={styles.target}>{this.targetNum}</Text>
         <View style={styles.randomContainer}>
           {this.randomNumbers.map((randomNumberEntry,index) =>
-            <Randomnumber key={index}
+            <Randomnumber
+              key={index}
+              id={index}
               number={randomNumberEntry}
-              isSelected = {this.isNumberSelected(index)}
+              isDisabled = {this.isNumberSelected(index)}
+              _onPressHandler = {this.selectNumber}
             />
           )}
         </View>
