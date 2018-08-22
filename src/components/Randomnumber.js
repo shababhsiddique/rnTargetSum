@@ -34,12 +34,13 @@ class Randomnumber extends React.Component{
 const styles = StyleSheet.create({
   randomnumberbtn: {
     width: 100,
-    backgroundColor: '#a6dcee',
+    backgroundColor: '#F4DECB',
     marginBottom: 30,
     marginHorizontal: 15,
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 4,
   },
   randomnumber: {
     fontSize: 40,

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View,  Text, StyleSheet} from 'react-native';
+import {View,  Text, Button,  StyleSheet} from 'react-native';
 
 import shuffle from 'lodash.shuffle';
 
@@ -13,6 +13,7 @@ class Game extends React.Component{
   static propTypes = {
     numberChoicesCount : PropTypes.number.isRequired,
     initialSeconds: PropTypes.number.isRequired,
+    _gameResetHandler: PropTypes.func.isRequired,
   };
 
 
@@ -123,6 +124,30 @@ class Game extends React.Component{
     //catch game status before rendering anything
     const gameStatus = this.gameStatus;
 
+    var actionBtn;
+
+    if (gameStatus === 'LOST') {
+      actionBtn = <Button
+        color="#E24E42"
+        title='Play Again'
+        onPress={this.props._gameResetHandler}
+      />;
+    }else if (gameStatus === 'WON') {
+      actionBtn = <Button
+        color="#007849"
+        title='Play Next'
+        onPress={this.props._gameResetHandler}
+      />;
+    } else {
+      //actionBtn = <Text>{this.state.remainingSeconds}</Text>;
+      actionBtn = <Button
+        color="#94618E"
+        title={this.state.remainingSeconds+' Sec'}
+        disabled = {true}
+        onPress={()=>{}}
+      />;
+    }
+
     return (
       <View style={styles.container}>
         <Text style={[styles.target, styles[`STATUS_${gameStatus}`]]}>{this.targetNum}</Text>
@@ -137,8 +162,9 @@ class Game extends React.Component{
             />
           )}
         </View>
-        <Text>{this.state.remainingSeconds}</Text>
-
+        <View style={styles.actionBtnContainer}>
+           {actionBtn}
+       </View>
       </View>
     );
 
@@ -146,11 +172,19 @@ class Game extends React.Component{
 
 }
 
+//Teal: #07889B
+//Tangerine: #E37222
+//Powder: #66B9BF
+//Tan: #EEAA7B
+//Aqua: #008F95
+//Mustard: #E9B000
+//Papaya: #E24E42
+//Blush: #EB6E80
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4379a6',
+    backgroundColor: '#F8EEE7',
   },
   randomContainer: {
     flex: 1,
@@ -165,16 +199,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     marginTop: 30,
     textAlign: 'center',
-    color: 'black'
+    color: 'white',
+    elevation: 5,
   },
   STATUS_PLAYING: {
-    backgroundColor: '#a6dcee',
+    backgroundColor: '#94618E',
   },
   STATUS_WON: {
-    backgroundColor: 'green',
+    backgroundColor: '#007849',
   },
   STATUS_LOST: {
-    backgroundColor: 'red',
+    backgroundColor: '#E24E42',
+  },
+  actionBtnContainer:{
+    margin: 30,
   }
 });
 
